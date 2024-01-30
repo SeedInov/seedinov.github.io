@@ -29,6 +29,7 @@
 
   <!-- bootstrap -->
   <link rel="stylesheet" href="plugins/bootstrap/bootstrap.min.css">
+  <script src="/plugins/bootstrap/bootstrap.min.js" defer></script>
   <!-- Animate -->
   <link rel="stylesheet" href="plugins/animate-css/animate.css">
   <!-- Icon Font css -->
@@ -133,6 +134,32 @@
       </button>
   
       <!-- Collapse -->
+      <!-- / .navbar-collapse -->
+      <div class="d-none d-lg-block">
+        <div class="collapse navbar-collapse has-dropdown" id="navbarCollapse">
+          <!-- Links -->
+          <ul class="navbar-nav ml-auto d-flex align-items-center">
+            <li class="nav-item">
+              <a href="project.html" class="nav-link js-scroll-trigger">
+                Portfolio
+              </a>
+            </li>
+            <li class="primary-btn">
+              <a href="contact.html" class="nav-link js-scroll-trigger">
+                Contact Us
+              </a>
+            </li>
+    
+            <!-- <li class="nav-item ">
+              <a href="contact.html" class="nav-link">
+                Contact
+              </a>
+            </li> -->
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="d-block d-lg-none">
       <div class="collapse navbar-collapse has-dropdown" id="navbarCollapse">
         <!-- Links -->
         <ul class="navbar-nav ml-auto d-flex align-items-center">
@@ -143,7 +170,7 @@
           </li>
           <li class="primary-btn">
             <a href="contact.html" class="nav-link js-scroll-trigger">
-              Contact
+              Contact Us
             </a>
           </li>
   
@@ -154,8 +181,6 @@
           </li> -->
         </ul>
       </div>
-      <!-- / .navbar-collapse -->
-
     </div>
   </div>
   <!-- / .container -->
