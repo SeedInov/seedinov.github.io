@@ -320,9 +320,10 @@
           <!-- Copyright -->
           <p class="footer-copy">
             SeedInov &copy;
+            <span id="currentYear"></span>
             <script>
               var CurrentYear = new Date().getFullYear();
-              document.write(CurrentYear);
+              document.getElementById("currentYear").innerHTML = CurrentYear;
             </script>
             . All Rights Reserved
           </p>

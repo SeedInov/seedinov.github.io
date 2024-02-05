@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-
 <!--
  // WEBSITE: https://themefisher.com
  // TWITTER: https://twitter.com/themefisher
@@ -7,6 +5,9 @@
  // GITHUB: https://github.com/themefisher/
 -->
 
+
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -508,9 +509,10 @@
           <!-- Copyright -->
           <p class="footer-copy">
             SeedInov &copy;
+            <span id="currentYear"></span>
             <script>
               var CurrentYear = new Date().getFullYear();
-              document.write(CurrentYear);
+              document.getElementById("currentYear").innerHTML = CurrentYear;
             </script>
             . All Rights Reserved
           </p>
