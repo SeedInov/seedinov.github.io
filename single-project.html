@@ -591,6 +591,12 @@
         <button id="letTalkModalButton" class="modal-open-btn primary-btn">
           Let's Talk
         </button>
+        <a href="/pricing-page.html">
+          
+          <button id="letTalkModalButton" class="modal-open-btn primary-btn">
+            Pricing
+          </button>
+        </a>
       </div>
     </div>
     <div class="d-block d-lg-none">
@@ -723,6 +729,11 @@
           <li class="primary-btn">
             <a href="contact.html" class="nav-link js-scroll-trigger">
               Contact Us
+            </a>
+          </li>
+          <li class="primary-btn" style="margin-top: 8px;">
+            <a href="/pricing-page.html" class="nav-link js-scroll-trigger">
+              Pricing
             </a>
           </li>
 
@@ -1448,16 +1459,6 @@
     // https://firebase.google.com/docs/web/setup#available-libraries
   
     // Your web app's Firebase configuration
-//     const firebaseConfig = {
-//   apiKey: "AIzaSyCIu00xHq9JK2AcsTb1_ZZCzFwtJDra00k",
-//   authDomain: "seedinov-7c503.firebaseapp.com",
-//   databaseURL: "https://seedinov-7c503-default-rtdb.firebaseio.com",
-//   projectId: "seedinov-7c503",
-//   storageBucket: "seedinov-7c503.appspot.com",
-//   messagingSenderId: "642542325045",
-//   appId: "1:642542325045:web:0f14e0f46c588f94bd907c"
-// };
-  
     const firebaseConfig = {
     apiKey: "AIzaSyC0nJZwyOT4Q9A2uT8eFfuRak_0SfQER6g",
     authDomain: "seedinov-portfolio.firebaseapp.com",
@@ -1472,119 +1473,118 @@
     var database = getDatabase(app);
 
     var chatMessages = document.querySelector(".chat-messages");
-        var userInput = document.getElementById("user-input");
-        var submitBtn = document.getElementById("chat-submit-btn");
-        var userInputWarpper = document.getElementById("input-wrapper");
+    var userInput = document.getElementById("user-input");
+    var submitBtn = document.getElementById("chat-submit-btn");
+    var userInputWarpper = document.getElementById("input-wrapper");
+    var loader = document.getElementById("loader");
+
 if(submitBtn) {
   var step = 1;
   var userEmail = "";
   var userPainPoint = "";
 
   function getScrollHeight(elm){
-  var savedValue = elm.value
-  elm.value = ''
-  elm._baseScrollHeight = elm.scrollHeight
-  elm.value = savedValue
-}
+    var savedValue = elm.value
+    elm.value = ''
+    elm._baseScrollHeight = elm.scrollHeight
+    elm.value = savedValue
+  }
 
-//   function onExpandableTextareaInput({ target:elm }){
-//   // make sure the input event originated from a textarea and it's desired to be auto-expandable
-//   if( !elm.classList.contains('autoExpand') || !elm.nodeName == 'TEXTAREA' ) return
+  const handleChatSubmit = (e) => {
+    e.preventDefault();
+    var userInputValue = userInput.value.trim();
+    if (userInputValue === "") return;
+
+    if (step === 1) {
+        userEmail = userInputValue;
+        appendUserMessage(userEmail);
+        userInput.value = "";
+        step++;
+        showLoader();
+        setTimeout(function() {
+            hideLoader();
+            appendBotMessage("Can you share more details about your problem?");
+        }, 2000); // 2-second delay
+    } else if (step === 2) {
+        userPainPoint = userInputValue;
+        appendUserMessage(userPainPoint);
+        userInput.value = "";
+        userInput.disabled = true;
+        submitBtn.disabled = true;
+        showLoader();
+        setTimeout(function() {
+            hideLoader();
+            appendBotMessage("Thank you! Our team will get back to you soon.");
+            userInputWarpper.style.display = "none";
+        }, 2000); // 2-second delay
+
+        // Save data to Firebase
+        saveMessage(userEmail, userPainPoint);
+    } 
+  }
   
-//   var minRows = elm.getAttribute('data-min-rows')|0, rows;
-//   !elm._baseScrollHeight && getScrollHeight(elm)
-
-//   elm.rows = minRows
-//   rows = Math.ceil((elm.scrollHeight - elm._baseScrollHeight) / 16)
-//   elm.rows = minRows + rows
-// }
-
-const handleChatSubmit = (e) => {
-      e.preventDefault();
-      var userInputValue = userInput.value.trim();
-      if (userInputValue === "") return;
-
-      if (step === 1) {
-          userEmail = userInputValue;
-          appendUserMessage(userEmail);
-          userInput.value = "";
-          step++;
-          setTimeout(function() {
-              appendBotMessage("Can you share more details about your problem?");
-          }, 1000); // 1-second delay
-      } else if (step === 2) {
-          userPainPoint = userInputValue;
-          appendUserMessage(userPainPoint);
-          userInput.value = "";
-          userInput.disabled = true;
-          submitBtn.disabled = true;
-          setTimeout(function() {
-              appendBotMessage("Thank you! Our team will get back to you soon.");
-              userInputWarpper.style.display = "none";
-          }, 1000); // 1-second delay
-
-          // Save data to Firebase
-          saveMessage(userEmail, userPainPoint);
-      } 
-
-    }
-  
-    submitBtn.addEventListener("click", 
-  handleChatSubmit
-  );
+  submitBtn.addEventListener("click", handleChatSubmit);
 
   userInput.addEventListener("keydown", function (e) {
-            if (e.key === "Enter") {
-                handleChatSubmit(e);
-            }
-        });
+    if (e.key === "Enter") {
+        handleChatSubmit(e);
+    }
+  });
 
-        userInput.addEventListener('input', onExpandableTextareaInput);
+  userInput.addEventListener('input', onExpandableTextareaInput);
 
-        function onExpandableTextareaInput() {
-            console.log("Hello");
-            userInput.style.height = 'auto';
-            userInput.style.height = (userInput.scrollHeight) + 'px';
-        }
+  function onExpandableTextareaInput() {
+    console.log("Hello");
+    userInput.style.height = 'auto';
+    userInput.style.height = (userInput.scrollHeight) + 'px';
+  }
 
   function appendUserMessage(message) {
-      var userMessage = document.createElement("div");
-      userMessage.classList.add("chat-message", "d-flex", "gap-4","flex-row-reverse");
-      userMessage.innerHTML = `
-          <img src="../../images/avatar.png" width="32px" height="32px" class="img-fluid"/>
-          <div class="max-w-300px">
-              <p>${message}</p>
-          </div>
-      `;
-      chatMessages.appendChild(userMessage);
+    var userMessage = document.createElement("div");
+    userMessage.classList.add("chat-message", "d-flex", "gap-4","flex-row-reverse");
+    userMessage.innerHTML = `
+        <img src="../../images/avatar.png" width="32px" height="32px" class="img-fluid"/>
+        <div class="max-w-300px">
+            <p style="color:#30ab89">${message}</p>
+        </div>
+    `;
+    chatMessages.appendChild(userMessage);
   }
 
   function appendBotMessage(message) {
-      var botMessage = document.createElement("div");
-      botMessage.classList.add("chat-message", "d-flex", "gap-4");
-      botMessage.innerHTML = `
-          <img src="../../images/favicon.png" width="32px" height="32px" class="img-fluid"/>
-          <div class="max-w-300px">
-              <p>${message}</p>
-          </div>
-      `;
-      chatMessages.appendChild(botMessage);
-      chatMessages.scrollTop = chatMessages.scrollHeight; // Scroll to the bottom
+    var botMessage = document.createElement("div");
+    botMessage.classList.add("chat-message", "d-flex", "gap-4");
+    botMessage.innerHTML = `
+        <img src="../../images/favicon.png" width="32px" height="32px" class="img-fluid"/>
+        <div class="max-w-300px">
+            <p>${message}</p>
+        </div>
+    `;
+    chatMessages.appendChild(botMessage);
+    chatMessages.scrollTop = chatMessages.scrollHeight; // Scroll to the bottom
+  }
+
+  function showLoader() {
+    loader.style.display = 'flex';
+  }
+
+  function hideLoader() {
+    loader.style.display = 'none';
   }
 
   // Save message to Firebase
   function saveMessage(email, painPoint) {
-      const messagesRef = ref(database, 'chatForm');
-      const newMessageRef = push(messagesRef);
-      set(newMessageRef, {
-          email: email,
-          painPoint: painPoint,
-          timestamp: new Date().toISOString()
-      }).then(() => {
-          console.log("Data saved successfully.");
-      }).catch((error) => {
-          console.error("Data could not be saved.", error);
-      });
+    const messagesRef = ref(database, 'chatForm');
+    const newMessageRef = push(messagesRef);
+    set(newMessageRef, {
+        email: email,
+        painPoint: painPoint,
+        timestamp: new Date().toISOString()
+    }).then(() => {
+        console.log("Data saved successfully.");
+    }).catch((error) => {
+        console.error("Data could not be saved.", error);
+    });
   }
 }
 
@@ -1640,167 +1640,6 @@ function saveContactMessage(name, phone, email, subject, message) {
 }
  </script>
 
-  <!-- <script type="module">
-    // Import the functions you need from the SDKs you need
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
-    import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
-
-    // Your web app's Firebase configuration
-    const firebaseConfig = {
-        apiKey: "AIzaSyDEsvEAGUe6FIENvim-zMW9FGI42oqKWwo",
-        authDomain: "seedinov-10c6d.firebaseapp.com",
-        databaseURL: "https://seedinov-10c6d-default-rtdb.firebaseio.com",
-        projectId: "seedinov-10c6d",
-        storageBucket: "seedinov-10c6d.appspot.com",
-        messagingSenderId: "236955398977",
-        appId: "1:236955398977:web:001f24ab3a8bc2bb06e7c0",
-        measurementId: "G-9XDGEX936G"
-    };
-
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const database = getDatabase(app);
-
-    var chatMessages = document.querySelector(".chat-messages");
-    var userInput = document.getElementById("user-input");
-    var submitBtn = document.getElementById("chat-submit-btn");
-
-    var step = 1;
-    var userEmail = "";
-    var userPainPoint = "";
-
-    submitBtn.addEventListener("click", function(e) {
-        e.preventDefault();
-        var userInputValue = userInput.value.trim();
-        if (userInputValue === "") return;
-
-        if (step === 1) {
-            userEmail = userInputValue;
-            appendUserMessage(userEmail);
-            userInput.value = "";
-            step++;
-            setTimeout(function() {
-                appendBotMessage("Can you share more details about your problem?");
-            }, 1000); // 1-second delay
-        } else if (step === 2) {
-            userPainPoint = userInputValue;
-            appendUserMessage(userPainPoint);
-            userInput.value = "";
-            userInput.disabled = true;
-            submitBtn.disabled = true;
-            setTimeout(function() {
-                appendBotMessage("Thank you! Our team will get back to you soon.");
-            }, 1000); // 1-second delay
-
-            // Save data to Firebase
-            saveMessage(userEmail, userPainPoint);
-        }
-    });
-
-    function appendUserMessage(message) {
-        var userMessage = document.createElement("div");
-        userMessage.classList.add("chat-message", "d-flex", "gap-4");
-        userMessage.innerHTML = `
-            <img src="../../images/favicon.png" width="32px" height="32px" class="img-fluid"/>
-            <div class="max-w-300px">
-                <p>${message}</p>
-            </div>
-        `;
-        chatMessages.appendChild(userMessage);
-    }
-
-    function appendBotMessage(message) {
-        var botMessage = document.createElement("div");
-        botMessage.classList.add("chat-message", "d-flex", "gap-4");
-        botMessage.innerHTML = `
-            <img src="../../images/favicon.png" width="32px" height="32px" class="img-fluid"/>
-            <div class="max-w-300px">
-                <p>${message}</p>
-            </div>
-        `;
-        chatMessages.appendChild(botMessage);
-        chatMessages.scrollTop = chatMessages.scrollHeight; // Scroll to the bottom
-    }
-
-    // Save message to Firebase
-    function saveMessage(email, painPoint) {
-        const messagesRef = ref(database, 'chatForm');
-        const newMessageRef = push(messagesRef);
-        set(newMessageRef, {
-            email: email,
-            painPoint: painPoint,
-            timestamp: new Date().toISOString()
-        }).then(() => {
-            console.log("Data saved successfully.");
-        }).catch((error) => {
-            console.error("Data could not be saved.", error);
-        });
-    }
-</script> -->
-
-  <!-- <script>
-    // Initialize Firebase
-    const firebaseConfig = {
-  apiKey: "AIzaSyDEsvEAGUe6FIENvim-zMW9FGI42oqKWwo",
-  authDomain: "seedinov-10c6d.firebaseapp.com",
-  databaseURL: "https://seedinov-10c6d-default-rtdb.firebaseio.com",
-  projectId: "seedinov-10c6d",
-  storageBucket: "seedinov-10c6d.appspot.com",
-  messagingSenderId: "236955398977",
-  appId: "1:236955398977:web:001f24ab3a8bc2bb06e7c0",
-  measurementId: "G-9XDGEX936G",
-};
-
-// // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    var messagesRef = firebase.database().ref('/');
-
-    document.getElementById('contactForm')
-      .addEventListener('submit', submitForm);
-
-    function submitForm(e) {
-      console.log('submitForm')
-      e.preventDefault();
-
-      // // Get values
-      var name = getInputVal('name');
-      var phone = getInputVal('phone');
-      var email = getInputVal('email');
-      var message = getInputVal("message");
-      var subject = getInputVal("subject");
-
-      saveMessage(name, phone, email, subject, message);
-      
-      alert("Thank you for contacting us. We will get back to you shortly.");
-      document.getElementById('contactForm').reset();
-    }
-
-    // Function to get form values
-    function getInputVal(id) {
-      return document.getElementById(id).value;
-    }
-
-    // Save message to firebase
-    function saveMessage(name, phone, email, subject, message) {
-      var newMessageRef = messagesRef.push();
-      try {
-      newMessageRef.set({
-        name: name,
-        phone: phone,
-        email: email,
-        subject: subject,
-        message: message,
-      }, function(error) {
-    if (error) {
-      console.error("Data could not be saved.", error);
-    } else {
-      console.log("Data saved successfully.");
-    }})
-  } catch(err) {
-    console.log("err",err)
-  }
-    }
-</script> -->
 <script src="js/script.js" defer></script>
 <script src="plugins/simplex-noise/simplex-noise.min.js" type="module"></script>
 <script type="module">

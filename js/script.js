@@ -305,13 +305,13 @@ document.addEventListener("DOMContentLoaded", function () {
   // Sample data for demonstration
   var videos = [
     {
-      videoSrc: "../../images/testimonials/sam.mp4",
-      authorImg: "images/client/shahbbir.png",
-      authorName: "Muhammad Shabbir",
-      authorRole: "Founder @mrwebgcc",
+      videoSrc: "../../images/testimonials/oscar.mp4",
+      authorImg: "images/client/oscar.png",
+      authorName: "Oscar van Maarseveen",
+      authorRole: "Orthopedic resident & Entrepreneur AI Healthcare",
       starRating: 5,
       description:
-        "An incredible seller! Exceeded my expectations and delivered within time frame. Looking forward to working together again.",
+        "Great Experience!",
     },
     {
       videoSrc: "../../images/testimonials/sam-cropped.mp4",
