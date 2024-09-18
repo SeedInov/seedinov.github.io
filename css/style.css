@@ -497,7 +497,7 @@ a:focus {
   margin-right: 16px;
   background: #fafafa;
   padding: 0px !important;
-  width: 600px;
+  width: 800px;
   left: 50%;
   transform: translateX(-50%) !important;
 }
@@ -514,6 +514,7 @@ a:focus {
 
 .dropdown-menu-large > li > ul > li {
   list-style: none;
+  width: 100%;
 }
 
 .dropdown-menu-large > li > ul > li > a {
@@ -523,7 +524,6 @@ a:focus {
   font-weight: normal;
   line-height: 1.428571429;
   color: #333333;
-  white-space: normal;
 }
 
 .dropdown-menu-large > li ul > li > a:hover,
